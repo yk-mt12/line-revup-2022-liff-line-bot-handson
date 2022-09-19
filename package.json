@@ -2,6 +2,7 @@
   "name": "line-revup-2022-liff-line-bot-handson",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://4geru.github.io/line-revup-2022-liff-line-bot-handson/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -17,7 +18,9 @@
     "start": "react-dotenv && react-scripts start",
     "build": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -38,6 +41,12 @@
     ]
   },
   "react-dotenv": {
-    "whitelist": ["MICRO_CMS_API_KEY", "MICRO_CMS_SERVICE_DOMAIN"]
+    "whitelist": [
+      "MICRO_CMS_API_KEY",
+      "MICRO_CMS_SERVICE_DOMAIN"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
