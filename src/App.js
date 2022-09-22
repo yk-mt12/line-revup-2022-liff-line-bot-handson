@@ -63,7 +63,8 @@ function App() {
   }, [])
   return (
     <div className="App">
-      { content && <Form content={content} microCmsClient={microCmsClient} /> }
+    { content && <Form content={content} microCmsClient={microCmsClient} /> }
+    { !content && 'userId 4gerugeru is not found' }
     </div>
   );
 }
