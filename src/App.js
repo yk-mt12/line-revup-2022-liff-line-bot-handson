@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Profile } from './Profile';
 import { LogoutButton } from './LogoutButton';
 import { LoginButton } from './LoginButton';
+import { EditForm } from './EditForm';
 
 function App() {
   const [liffState, setLiffState] = useState([null, false]);
@@ -11,7 +12,7 @@ function App() {
     liff
       .init({ liffId: '1657480741-kYJW0Nev' })
       .then(() => {
-        const login = liff?.isLoggedIn()
+        const login = liff.isLoggedIn()
         setLiffState([liff, login])
       })
       .catch((err) => {
@@ -43,6 +44,7 @@ function App() {
         />
       }
       { isLogin && <Profile liffObject={liffObject} /> }
+      { <EditForm liffObject={liffObject} /> }
     </div>
   );
 }

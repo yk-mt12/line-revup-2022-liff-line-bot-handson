@@ -11,7 +11,7 @@ export const Profile = ({liffObject}) => {
             })
           })
         }
-    }, [])
+    }, [liffObject])
     if (!profile) return;
     return (
       <>
