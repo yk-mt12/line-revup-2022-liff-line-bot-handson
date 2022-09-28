@@ -15,19 +15,21 @@ function App() {
     liff
       .init({ liffId: '1657480741-kYJW0Nev' })
       .then(() => {
-        const login = liff.isLoggedIn()
-        const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
-        microCmsClient.create({
-          endpoint: 'liff',
-          content: {
-            userId: 'gege',
-            title: "wood",
-            content: "複数行のテキストを入力\n複数行のテキストを入力"
-          }
-        }).then((res) => console.log(res.id)
-        ).catch((e) => console.log(e))
-
-        setLiffState([liff, login])
+        const isLogin = liff.isLoggedIn()
+        if(isLogin) {
+          liff.getProfile().then((profile) => {
+            const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
+            microCmsClient.create({
+              endpoint: 'liff',
+              content: {
+                userId: profile.userId,
+                title: "title",
+                content: "複数行のテキストを入力\n複数行のテキストを入力"
+              }
+            }).then((res) => console.log(res.id) )
+          })
+        }
+        setLiffState([liff, isLogin])
       })
       .catch((err) => {
         console.error({ err })
@@ -58,7 +60,7 @@ function App() {
         />
       }
       { isLogin && <Profile liffObject={liffObject} /> }
-      { <EditForm liffObject={liffObject} /> }
+      { <EditForm liffObject={liffObject} isLogin={isLogin} /> }
     </div>
   );
 }

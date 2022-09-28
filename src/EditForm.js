@@ -2,21 +2,25 @@ import { useState, useEffect } from 'react';
 import env from "react-dotenv";
 const { createClient: createMicroCmsClient } = require('microcms-js-sdk');
 
-export const EditForm = ({liffObject}) => {
+export const EditForm = ({liffObject, isLogin}) => {
   const [formContent, setFormContent] = useState(undefined)
   const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
   useEffect(() => {
-    microCmsClient.get({
-      endpoint: 'liff',
-      queries: {
-        // filter https://document.microcms.io/content-api/get-list-contents#hdebbdc8e86
-        // filters: `userId[equals]${fetchedProfile.userId}`
-        filters: `userId[equals]4gerugeru`
-      },
-    }).then((res) => {
-      setFormContent(res.contents[0])
-    })
-  }, [])
+    if(liffObject && liffObject.isLoggedIn()) {
+      liffObject.getProfile().then((profile) => {
+        microCmsClient.get({
+          endpoint: 'liff',
+          queries: {
+            // filter https://document.microcms.io/content-api/get-list-contents#hdebbdc8e86
+            filters: `userId[equals]${profile.userId}`
+          },
+        }).then((res) => {
+          setFormContent(res.contents[0])
+        })
+      })
+    }
+  }, [isLogin])
+
   if (!formContent) return;
   return <>
     <div className={'container'}>
