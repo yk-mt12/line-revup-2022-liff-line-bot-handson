@@ -7,75 +7,44 @@ const user = {
   pictureUrl: 'https://i.imgur.com/yXOvdOSs.jpg'
 };
 
-const Profile = ({login}) => {
-  const [profile, setProfile] = useState(user);
-  useEffect(() => {
-    if(liff.isLoggedIn()) {
-      liff.getProfile().then((fetchedProfile) => {
-        setProfile({
-          displayName: fetchedProfile.displayName,
-          pictureUrl: fetchedProfile.pictureUrl
-        })
-      })  
-    } else {
-      setProfile(user)
-    }  
-  }, [login])
-  return (
-    <>
-      <h1>{profile.displayName}</h1>
-      <img
-        className="avatar"
-        src={profile.pictureUrl}
-        alt={'Photo of ' + profile.displayName}
-        style={{
-          width: 90,
-          height: 90
-        }}
-      />
-    </>
-  );
-}
-
-const LoginButton = ({setLogin}) => {
-  const click = () => {
-    if (!liff.isLoggedIn()) {
-      liff.login().then(() => {
-        setLogin(true)
-      })
-    }
-  }
-  return (
-    <button onClick={click}>login</button>
-  );
-}
-
-const LogoutButton = ({setLogin}) => {
-  const click = () => {
-    liff.logout()
-    setLogin(false)
-  }
-  return (
-    <button onClick={click}>logout</button>
-  );
-}
-
 function App() {
-  const [login, setLogin] = useState(undefined);
+  const [liffState, setLiffState] = useState([null, false]);
   useEffect(() => {
-    setLogin(liff.isLoggedIn())
-  }, [login])
+    liff
+      .init({ liffId: '1657480741-kYJW0Nev' })
+      .then(() => {
+        const login = liff?.isLoggedIn()
+        setLiffState([liff, login])
+      })
+      .catch((err) => {
+        console.error({ err })
+      })
+  }, [])
+
+  const [liffObject, isLogin] = liffState
 
   return (
     <div className="App">
       <h1>Welcome to my app</h1>
-      { !login && '未ログイン' }
-      { login && 'ログイン' }
-      { login ?
-        <LogoutButton setLogin={setLogin} /> :
-        <LoginButton setLogin={setLogin} />
+      { !isLogin && '未ログイン' }
+      { isLogin && 'ログイン' }
+      { isLogin ?
+        <LogoutButton
+          liffObject={liffObject}
+          logout={(() => {
+            liffObject.logout()
+            setLiffState([liff, false]);
+          })}/> :
+        <LoginButton
+          liffObject={liffObject}
+          login={(() => {
+            liffObject.login().then(() => {
+              setLiffState([liff, true]);
+            })
+          })}
+        />
       }
-      { login && <Profile /> }
+      { isLogin && <Profile liffObject={liffObject} /> }
     </div>
   );
 }
