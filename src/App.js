@@ -2,10 +2,9 @@
 import './App.css';
 import liff from '@line/liff'
 import { useState, useEffect } from 'react';
-const user = {
-  displayName: 'Hedy Lamarr',
-  pictureUrl: 'https://i.imgur.com/yXOvdOSs.jpg'
-};
+import { Profile } from './Profile';
+import { LogoutButton } from './LogoutButton';
+import { LoginButton } from './LoginButton';
 
 function App() {
   const [liffState, setLiffState] = useState([null, false]);
