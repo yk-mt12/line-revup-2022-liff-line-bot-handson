@@ -1,70 +1,48 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import env from "react-dotenv";
-const { createClient: createMicroCmsClient } = require('microcms-js-sdk');
-
-const Form = ({content, microCmsClient}) => {
-  const [formContent, setFormContent] = useState(content)
-
-  return <div className={'container'}>
-    <div className='item'>
-      <input
-        type="text"
-        value={formContent.title}
-        onChange={(e) => {
-          setFormContent({...formContent, title: e.target.value })
-        }}
-        placeholder="title"
-      />
-    </div>
-    <div className='item'>
-      <textarea
-        value={formContent.content}
-        onChange={(e) => {
-          setFormContent({...formContent, content: e.target.value })
-        }}
-        rows={5}
-        placeholder="content"
-      />
-    </div>
-    <div className='item'>
-      <button onClick={() => {
-        microCmsClient
-          .update({
-            endpoint: 'liff',
-            contentId: formContent.id,
-            content: {
-              title: formContent.title,
-              content: formContent.content,
-            },
-          })
-          .then((res) => console.log(res.id))
-          .catch((err) => console.error(err));
-      }}>
-        submit
-      </button>
-    </div>
-  </div>
-}
+import liff from '@line/liff'
+import { useState, useEffect } from 'react';
+import { Profile } from './Profile';
+import { LogoutButton } from './LogoutButton';
+import { LoginButton } from './LoginButton';
 
 function App() {
-  const [content, setContent] = useState(undefined)
-  const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
+  const [liffState, setLiffState] = useState([null, false]);
   useEffect(() => {
-    microCmsClient.get({
-      endpoint: 'liff',
-      queries: {
-        // filter https://document.microcms.io/content-api/get-list-contents#hdebbdc8e86
-        filters: 'userId[equals]4gerugeru'
-      },
-    }).then((res) => {
-      setContent(res.contents[0])
-    })
+    liff
+      .init({ liffId: '1657480741-kYJW0Nev' })
+      .then(() => {
+        const login = liff?.isLoggedIn()
+        setLiffState([liff, login])
+      })
+      .catch((err) => {
+        console.error({ err })
+      })
   }, [])
+
+  const [liffObject, isLogin] = liffState
+
   return (
     <div className="App">
-    { content && <Form content={content} microCmsClient={microCmsClient} /> }
-    { !content && 'userId 4gerugeru is not found' }
+      <h1>Welcome to my app</h1>
+      { !isLogin && '未ログイン' }
+      { isLogin && 'ログイン' }
+      { isLogin ?
+        <LogoutButton
+          liffObject={liffObject}
+          logout={(() => {
+            liffObject.logout()
+            setLiffState([liff, false]);
+          })}/> :
+        <LoginButton
+          liffObject={liffObject}
+          login={(() => {
+            liffObject.login().then(() => {
+              setLiffState([liff, true]);
+            })
+          })}
+        />
+      }
+      { isLogin && <Profile liffObject={liffObject} /> }
     </div>
   );
 }

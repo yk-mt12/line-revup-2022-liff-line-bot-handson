@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://4geru.github.io/line-revup-2022-liff-line-bot-handson/",
   "dependencies": {
+    "@line/liff": "^2.21.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
