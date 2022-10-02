@@ -1,0 +1,1 @@
+{"apiFields":[{"idValue":"z-2OeHTwbJ","fieldId":"userId","name":"LINE ユーザーID","kind":"text","required":true,"isUnique":true},{"fieldId":"title","name":"タイトル","kind":"text","isUnique":false},{"fieldId":"content","name":"本文","kind":"textArea"}],"customFields":[]}
