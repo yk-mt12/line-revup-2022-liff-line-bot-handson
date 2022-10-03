@@ -13,7 +13,7 @@ function App() {
   const [liffState, setLiffState] = useState([null, false]);
   useEffect(() => {
     liff
-      .init({ liffId: '1657480741-kYJW0Nev' })
+      .init({ liffId: env.LIFF_ID })
       .then(() => {
         const isLogin = liff.isLoggedIn()
         if(isLogin) {
