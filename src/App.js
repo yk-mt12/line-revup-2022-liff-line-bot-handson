@@ -60,7 +60,7 @@ function App() {
         />
       }
       { isLogin && <Profile liffObject={liffObject} /> }
-      { <EditForm liffObject={liffObject} isLogin={isLogin} /> }
+      { isLogin && <EditForm liffObject={liffObject} isLogin={isLogin} /> }
     </div>
   );
 }
