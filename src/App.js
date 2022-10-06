@@ -5,7 +5,6 @@ import { Profile } from './Profile';
 import { LogoutButton } from './LogoutButton';
 import { LoginButton } from './LoginButton';
 import { EditForm } from './EditForm';
-import env from "react-dotenv";
 const { createClient: createMicroCmsClient } = require('microcms-js-sdk');
 
 
@@ -13,12 +12,12 @@ function App() {
   const [liffState, setLiffState] = useState([null, false]);
   useEffect(() => {
     liff
-      .init({ liffId: env.LIFF_ID })
+      .init({ liffId: process.env.REACT_APP_LIFF_ID })
       .then(() => {
         const isLogin = liff.isLoggedIn()
         if(isLogin) {
           liff.getProfile().then((profile) => {
-            const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
+            const microCmsClient = createMicroCmsClient({ serviceDomain: process.env.REACT_APP_MICRO_CMS_SERVICE_DOMAIN, apiKey: process.env.REACT_APP_MICRO_CMS_API_KEY });
             microCmsClient.create({
               endpoint: 'liff',
               content: {

@@ -11,13 +11,12 @@
     "microcms-js-sdk": "^2.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-dotenv": "^0.1.3",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && react-scripts build",
+    "start": "react-scripts start",
+    "build": "dotenv -e .env react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -43,12 +42,13 @@
   },
   "react-dotenv": {
     "whitelist": [
-      "MICRO_CMS_API_KEY",
-      "MICRO_CMS_SERVICE_DOMAIN",
-      "LIFF_ID"
+      "REACT_APP_MICRO_CMS_API_KEY",
+      "REACT_APP_MICRO_CMS_SERVICE_DOMAIN",
+      "REACT_APP_LIFF_ID"
     ]
   },
   "devDependencies": {
+    "dotenv-cli": "^6.0.0",
     "gh-pages": "^4.0.0"
   }
 }

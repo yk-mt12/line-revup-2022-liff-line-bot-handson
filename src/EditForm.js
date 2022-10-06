@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import env from "react-dotenv";
 const { createClient: createMicroCmsClient } = require('microcms-js-sdk');
 
 export const EditForm = ({liffObject, isLogin}) => {
   const [formContent, setFormContent] = useState(undefined)
-  const microCmsClient = createMicroCmsClient({ serviceDomain: env.MICRO_CMS_SERVICE_DOMAIN, apiKey: env.MICRO_CMS_API_KEY });
+  const microCmsClient = createMicroCmsClient({ serviceDomain: process.env.REACT_APP_MICRO_CMS_SERVICE_DOMAIN, apiKey: process.env.REACT_APP_MICRO_CMS_API_KEY });
   useEffect(() => {
     if(liffObject && liffObject.isLoggedIn()) {
       liffObject.getProfile().then((profile) => {
